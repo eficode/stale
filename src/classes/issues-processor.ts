@@ -117,16 +117,17 @@ export class IssuesProcessor {
 
       return this.operations.getRemainingOperationsCount();
     } else {
-      this._logger.info(
-        `Checking issues ${LoggerService.red(JSON.stringify(issues))}`
-      );
       // eslint-disable-next-line @typescript-eslint/prefer-for-of
       for (let i = 0; i < issues.length; i++) {
-        this._logger.info(
-          `Checking ${LoggerService.red(JSON.stringify(issues[i]))}`
-        );
         if (issues[i].isPullRequest) {
-          issues[i].pull_request = await this._getPullRequest(issues[i]);
+          const pr = await this._getPullRequest(issues[i]);
+          if (pr) {
+            issues[i].pull_request = {
+              ...issues[i].pull_request,
+              user: pr.user,
+              requested_reviewers: pr.requested_reviewers
+            };
+          }
           this._logger.info(LoggerService.red(JSON.stringify(issues[i])));
         }
       }
