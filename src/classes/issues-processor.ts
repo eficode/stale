@@ -117,6 +117,9 @@ export class IssuesProcessor {
 
       return this.operations.getRemainingOperationsCount();
     } else {
+      this._logger.info(
+        `Checking issues ${LoggerService.red(JSON.stringify(issues))}`
+      );
       // eslint-disable-next-line @typescript-eslint/prefer-for-of
       for (let i = 0; i < issues.length; i++) {
         this._logger.info(
