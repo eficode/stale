@@ -297,6 +297,15 @@ class IssuesProcessor {
                 return this.operations.getRemainingOperationsCount();
             }
             else {
+                this._logger.info(`Checking issues ${logger_service_1.LoggerService.red(JSON.stringify(issues))}`);
+                // eslint-disable-next-line @typescript-eslint/prefer-for-of
+                for (let i = 0; i < issues.length; i++) {
+                    this._logger.info(`Checking ${logger_service_1.LoggerService.red(JSON.stringify(issues[i]))}`);
+                    if (issues[i].isPullRequest) {
+                        issues[i].pull_request = yield this._getPullRequest(issues[i]);
+                        this._logger.info(logger_service_1.LoggerService.red(JSON.stringify(issues[i])));
+                    }
+                }
                 this._logger.info(`${logger_service_1.LoggerService.yellow('Processing the batch of issues')} ${logger_service_1.LoggerService.cyan(`#${page}`)} ${logger_service_1.LoggerService.yellow('containing')} ${logger_service_1.LoggerService.cyan(issues.length)} ${logger_service_1.LoggerService.yellow(`issue${issues.length > 1 ? 's' : ''}...`)}`);
             }
             const labelsToAddWhenUnstale = words_to_list_1.wordsToList(this.options.labelsToAddWhenUnstale);
@@ -540,7 +549,8 @@ class IssuesProcessor {
             });
             const events = yield this.client.paginate(options);
             const reversedEvents = events.reverse();
-            const staleLabeledEvent = reversedEvents.find(event => event.event === 'labeled' && clean_label_1.cleanLabel(event.label.name) === clean_label_1.cleanLabel(label));
+            const staleLabeledEvent = reversedEvents.find(event => event.event === 'labeled' &&
+                clean_label_1.cleanLabel(event.label.name) === clean_label_1.cleanLabel(label));
             if (!staleLabeledEvent) {
                 // Must be old rather than labeled
                 return undefined;
