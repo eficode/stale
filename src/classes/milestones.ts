@@ -15,6 +15,7 @@ export class Milestones {
 
   private readonly _options: IIssuesProcessorOptions;
   private readonly _issue: Issue;
+
   private readonly _issueLogger: IssueLogger;
 
   constructor(options: Readonly<IIssuesProcessorOptions>, issue: Issue) {
