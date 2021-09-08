@@ -121,6 +121,7 @@ export class IssuesProcessor {
       for (let i = 0; i < issues.length; i++) {
         if (issues[i].isPullRequest) {
           issues[i].pull_request = await this._getPullRequest(issues[i]);
+          this._logger.info(JSON.stringify(issues[i]));
         }
       }
       this._logger.info(
@@ -510,8 +511,6 @@ export class IssuesProcessor {
           page
         });
       this._statistics?.incrementFetchedItemsCount(issueResult.data.length);
-
-      this._logger.info(JSON.stringify(issueResult.data[0]));
       return issueResult.data.map(
         (issue: Readonly<IIssue>): Issue => new Issue(this.options, issue)
       );
