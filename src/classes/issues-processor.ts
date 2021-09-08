@@ -506,7 +506,6 @@ export class IssuesProcessor {
       this._statistics?.incrementFetchedItemsCount(issueResult.data.length);
 
       this._logger.info(JSON.stringify(issueResult.data[0]));
-
       return issueResult.data.map(
         (issue: Readonly<IIssue>): Issue => new Issue(this.options, issue)
       );
