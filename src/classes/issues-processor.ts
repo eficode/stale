@@ -121,7 +121,7 @@ export class IssuesProcessor {
       for (let i = 0; i < issues.length; i++) {
         if (issues[i].isPullRequest) {
           issues[i].pull_request = await this._getPullRequest(issues[i]);
-          this._logger.info(JSON.stringify(issues[i]));
+          this._logger.info(LoggerService.red(JSON.stringify(issues[i])));
         }
       }
       this._logger.info(
