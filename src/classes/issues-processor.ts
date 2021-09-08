@@ -118,6 +118,19 @@ export class IssuesProcessor {
       return this.operations.getRemainingOperationsCount();
     } else {
       this._logger.info(
+        `Checking issues ${LoggerService.red(JSON.stringify(issues))}`
+      );
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of
+      for (let i = 0; i < issues.length; i++) {
+        this._logger.info(
+          `Checking ${LoggerService.red(JSON.stringify(issues[i]))}`
+        );
+        if (issues[i].isPullRequest) {
+          issues[i].pull_request = await this._getPullRequest(issues[i]);
+          this._logger.info(LoggerService.red(JSON.stringify(issues[i])));
+        }
+      }
+      this._logger.info(
         `${LoggerService.yellow(
           'Processing the batch of issues'
         )} ${LoggerService.cyan(`#${page}`)} ${LoggerService.yellow(
@@ -504,9 +517,6 @@ export class IssuesProcessor {
           page
         });
       this._statistics?.incrementFetchedItemsCount(issueResult.data.length);
-
-      this._logger.info(JSON.stringify(issueResult.data[0]));
-
       return issueResult.data.map(
         (issue: Readonly<IIssue>): Issue => new Issue(this.options, issue)
       );
