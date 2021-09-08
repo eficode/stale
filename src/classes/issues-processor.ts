@@ -119,6 +119,9 @@ export class IssuesProcessor {
     } else {
       // eslint-disable-next-line @typescript-eslint/prefer-for-of
       for (let i = 0; i < issues.length; i++) {
+        this._logger.info(
+          `Checking ${LoggerService.red(JSON.stringify(issues[i]))}`
+        );
         if (issues[i].isPullRequest) {
           issues[i].pull_request = await this._getPullRequest(issues[i]);
           this._logger.info(LoggerService.red(JSON.stringify(issues[i])));
