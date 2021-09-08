@@ -5,6 +5,7 @@ import {IIssue} from '../interfaces/issue';
 import {IIssuesProcessorOptions} from '../interfaces/issues-processor-options';
 import {ILabel} from '../interfaces/label';
 import {IMilestone} from '../interfaces/milestone';
+import {IPullRequest} from '../interfaces/pull-request';
 import {IsoDateString} from '../types/iso-date-string';
 import {Operations} from './operations';
 
@@ -15,7 +16,7 @@ export class Issue implements IIssue {
   created_at: IsoDateString;
   updated_at: IsoDateString;
   readonly labels: ILabel[];
-  readonly pull_request: Object | null | undefined;
+  pull_request: Object | null | undefined | void | IPullRequest;
   readonly state: string | 'closed' | 'open';
   readonly locked: boolean;
   readonly milestone: IMilestone | undefined;
